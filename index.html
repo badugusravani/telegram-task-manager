@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="add-task-form">
+            <h2>Add New Task</h2>
+            <input type="text" id="taskName" placeholder="Task Name" required>
+            <input type="url" id="taskUrl" placeholder="Task URL" required>
+            <div class="time-selector">
+                <select id="taskTimer" required>
+                    <option value="">Select Duration</option>
+                    <option value="0.5">30 Minutes</option>
+                    <option value="1">1 Hour</option>
+                    <option value="2">2 Hours</option>
+                    <option value="3">3 Hours</option>
+                    <option value="4">4 Hours</option>
+                    <option value="5">5 Hours</option>
+                    <option value="6">6 Hours</option>
+                    <option value="8">8 Hours</option>
+                    <option value="custom">Custom Duration</option>
+                </select>
+                <div id="customTimeInput" class="custom-time hidden">
+                    <input type="number" id="customHours" placeholder="Hours" min="0" max="24">
+                    <input type="number" id="customMinutes" placeholder="Minutes" min="0" max="59">
+                </div>
+            </div>
+            <button onclick="addTask()">Add Task</button>
+        </div>
+
+        <div class="tasks-section">
+            <div class="section-header">
+                <h2>Tasks</h2>
+                <span class="task-count" id="taskCount">0 tasks</span>
+            </div>
+            <button class="run-all-button" onclick="runAllTasks()" id="runAllButton">▶️ Run All Tasks</button>
+            <div id="tasksList"></div>
+        </div>
+
+        <div class="running-tasks-section">
+            <div class="section-header">
+                <h2>Running Tasks</h2>
+                <span class="task-count" id="runningTaskCount">0 running</span>
+            </div>
+            <div id="runningTasksList"></div>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
