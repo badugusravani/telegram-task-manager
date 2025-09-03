@@ -17,7 +17,7 @@ register_block_pattern(
 <!-- /wp:heading -->
 
 <!-- wp:paragraph {"align":"center"} -->
-<p class="has-text-align-center">Practice with thousands of multiple choice questions across all subjects. Get instant answers and detailed explanations.</p>
+<p class="has-text-align-center">Class 9–12 · CBSE · NEET · JEE · Programming · Chemistry</p>
 <!-- /wp:paragraph -->
 
 <!-- wp:search {"label":"Search","showLabel":false,"placeholder":"Search for quizzes, topics, or questions...","width":100,"widthUnit":"%","buttonText":"Search","buttonPosition":"button-inside","buttonUseIcon":true} /-->
