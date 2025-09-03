@@ -148,6 +148,19 @@ body {
     gap: 1rem;
 }
 
+.content-textarea {
+    width: 100%;
+    min-height: 300px;
+    padding: 1.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    resize: vertical;
+    background: #f8f9fa;
+}
+
 .content-controls {
     display: flex;
     flex-wrap: wrap;

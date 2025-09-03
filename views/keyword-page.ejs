@@ -58,13 +58,24 @@
                     <div class="tool-card">
                         <h2 class="tool-title">Salary Calculator</h2>
                         <div class="calculator-content">
-                            <div class="calculator-result">
-                                <%= keyword.content %>
+                            <div class="form-row">
+                                <label>Hourly Rate ($)</label>
+                                <input type="number" id="hourlyInput" value="<%= (keyword.title.match(/^(\$?\d+)/) || [,''])[1].replace('$','') %>" min="0" step="0.01" />
+                            </div>
+                            <div class="form-row">
+                                <label>Hours per week</label>
+                                <input type="number" id="hoursPerWeek" value="40" min="0" step="1" />
+                            </div>
+                            <div class="form-row">
+                                <label>Weeks per year</label>
+                                <input type="number" id="weeksPerYear" value="52" min="0" step="1" />
                             </div>
                             <div class="button-group">
-                                <button onclick="copyCalculatorResult()" class="btn btn-primary">Copy Result</button>
-                                <button onclick="printCalculator()" class="btn btn-secondary">Print</button>
+                                <button onclick="recalculate()" class="btn btn-primary">Calculate</button>
+                                <button onclick="copyCalculatorResult()" class="btn btn-secondary">Copy Result</button>
+                                <button onclick="printCalculator()" class="btn btn-print">Print</button>
                             </div>
+                            <div class="calculator-result" id="calcResult"><%= keyword.content %></div>
                         </div>
                     </div>
                 </div>
@@ -80,9 +91,7 @@
                                 <button onclick="clearContent()" class="btn btn-outline">Clear</button>
                                 <button onclick="printContent()" class="btn btn-print">Print</button>
                             </div>
-                            <div class="content-display">
-                                <div id="generatedContent" class="content-text"><%= keyword.content %></div>
-                            </div>
+                            <textarea id="generatedContent" class="content-textarea" readonly><%= keyword.content %></textarea>
                             <div class="content-info">
                                 <span class="content-length">Length: <span id="contentLength">0</span> characters</span>
                                 <span class="content-lines">Lines: <span id="contentLines">0</span></span>
@@ -168,15 +177,17 @@
         function updateContentInfo() {
             const content = document.getElementById('generatedContent');
             if (content) {
-                const text = content.textContent || content.innerText;
-                document.getElementById('contentLength').textContent = text.length;
-                document.getElementById('contentLines').textContent = text.split('\n').length;
+                const text = content.value || content.textContent || content.innerText || '';
+                const lenEl = document.getElementById('contentLength');
+                const linesEl = document.getElementById('contentLines');
+                if (lenEl) lenEl.textContent = text.length;
+                if (linesEl) linesEl.textContent = text.split('\n').length;
             }
         }
 
         function copyToClipboard() {
             const content = document.getElementById('generatedContent');
-            const text = content.textContent || content.innerText;
+            const text = content.value || content.textContent || content.innerText;
             
             if (navigator.clipboard && window.isSecureContext) {
                 // Use modern clipboard API
@@ -212,7 +223,7 @@
         }
 
         function copyCalculatorResult() {
-            const content = document.querySelector('.calculator-result');
+            const content = document.getElementById('calcResult');
             const text = content.textContent || content.innerText;
             
             if (navigator.clipboard && window.isSecureContext) {
@@ -228,22 +239,24 @@
 
         function selectAll() {
             const content = document.getElementById('generatedContent');
-            const range = document.createRange();
-            range.selectNodeContents(content);
-            const selection = window.getSelection();
-            selection.removeAllRanges();
-            selection.addRange(range);
+            if (content && content.select) {
+                content.focus();
+                content.select();
+            }
         }
 
         function clearContent() {
             const content = document.getElementById('generatedContent');
-            content.innerHTML = '';
-            updateContentInfo();
+            if (content) {
+                if ('value' in content) content.value = '';
+                else content.innerHTML = '';
+                updateContentInfo();
+            }
         }
 
         function printContent() {
             const content = document.getElementById('generatedContent');
-            const text = content.textContent || content.innerText;
+            const text = content.value || content.textContent || content.innerText;
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
                 <html>
@@ -265,7 +278,7 @@
         }
 
         function printCalculator() {
-            const content = document.querySelector('.calculator-result');
+            const content = document.getElementById('calcResult');
             const text = content.textContent || content.innerText;
             const printWindow = window.open('', '_blank');
             printWindow.document.write(`
@@ -307,6 +320,16 @@
             setTimeout(() => {
                 notification.remove();
             }, 3000);
+        }
+        function recalculate() {
+            const hourly = parseFloat(document.getElementById('hourlyInput').value || '0');
+            const hours = parseFloat(document.getElementById('hoursPerWeek').value || '0');
+            const weeks = parseFloat(document.getElementById('weeksPerYear').value || '0');
+            const weekly = hourly * hours;
+            const monthly = weekly * (weeks / 12);
+            const annual = hourly * hours * weeks;
+            const txt = `Hourly Rate: $${hourly}\nWeekly Pay (${hours} hours): $${weekly.toFixed(2)}\nMonthly Pay: $${monthly.toFixed(2)}\nAnnual Salary: $${annual.toFixed(2)}\n\nBreakdown:\n- ${hours} hours per week\n- ${weeks} weeks per year`;
+            document.getElementById('calcResult').textContent = txt;
         }
     </script>
 </body>

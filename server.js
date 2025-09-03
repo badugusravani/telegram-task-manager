@@ -48,6 +48,24 @@ app.get('/', (req, res) => {
   });
 });
 
+// Category listing route
+app.get('/category/:name', (req, res) => {
+  const name = req.params.name;
+  const list = keywords.filter(k => k.category === name);
+  if (list.length === 0) {
+    return res.status(404).render('404', {
+      title: 'Category Not Found',
+      description: 'The requested category does not exist.'
+    });
+  }
+  res.render('category', {
+    title: `${name.charAt(0).toUpperCase() + name.slice(1)} Tools - Browse`,
+    description: `Browse ${name} tools and generators.`,
+    category: name,
+    items: list
+  });
+});
+
 app.get('/sitemap.xml', async (req, res) => {
   const sitemap = await generateSitemap();
   res.header('Content-Type', 'application/xml');
