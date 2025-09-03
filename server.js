@@ -128,6 +128,24 @@ app.get('/api/categories', (req, res) => {
   res.json({ categories });
 });
 
+// Search route
+app.get('/search', (req, res) => {
+  const q = (req.query.q || '').toString().toLowerCase();
+  const results = q ? keywords.filter(k =>
+    k.title.toLowerCase().includes(q) ||
+    k.description.toLowerCase().includes(q) ||
+    k.keyword.toLowerCase().includes(q) ||
+    (k.tags || []).join(' ').toLowerCase().includes(q)
+  ).slice(0, 100) : [];
+
+  res.render('search', {
+    title: q ? `Search: ${q}` : 'Search Tools',
+    description: 'Find any tool quickly by name, category, or purpose.',
+    q,
+    results
+  });
+});
+
 // Error handling
 app.use((err, req, res, next) => {
   console.error(err.stack);
