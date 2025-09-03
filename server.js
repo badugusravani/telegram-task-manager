@@ -88,6 +88,24 @@ app.get('/tools', (req, res) => {
   });
 });
 
+// Search route (must be before catch-all keyword route)
+app.get('/search', (req, res) => {
+  const q = (req.query.q || '').toString().toLowerCase();
+  const results = q ? keywords.filter(k =>
+    k.title.toLowerCase().includes(q) ||
+    k.description.toLowerCase().includes(q) ||
+    k.keyword.toLowerCase().includes(q) ||
+    (k.tags || []).join(' ').toLowerCase().includes(q)
+  ).slice(0, 100) : [];
+
+  res.render('search', {
+    title: q ? `Search: ${q}` : 'Search Tools',
+    description: 'Find any tool quickly by name, category, or purpose.',
+    q,
+    results
+  });
+});
+
 // Dynamic route for keyword pages
 app.get('/:keyword', async (req, res) => {
   const keyword = req.params.keyword;
@@ -126,24 +144,6 @@ app.get('/api/keywords', (req, res) => {
 app.get('/api/categories', (req, res) => {
   const categories = [...new Set(keywords.map(k => k.category))];
   res.json({ categories });
-});
-
-// Search route
-app.get('/search', (req, res) => {
-  const q = (req.query.q || '').toString().toLowerCase();
-  const results = q ? keywords.filter(k =>
-    k.title.toLowerCase().includes(q) ||
-    k.description.toLowerCase().includes(q) ||
-    k.keyword.toLowerCase().includes(q) ||
-    (k.tags || []).join(' ').toLowerCase().includes(q)
-  ).slice(0, 100) : [];
-
-  res.render('search', {
-    title: q ? `Search: ${q}` : 'Search Tools',
-    description: 'Find any tool quickly by name, category, or purpose.',
-    q,
-    results
-  });
 });
 
 // Error handling
