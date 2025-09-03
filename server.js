@@ -79,6 +79,15 @@ Allow: /
 Sitemap: ${req.protocol}://${req.get('host')}/sitemap.xml`);
 });
 
+// All tools page
+app.get('/tools', (req, res) => {
+  res.render('tools', {
+    title: 'All Tools - Copy Paste Tools',
+    description: 'Browse all copy paste and calculator tools.',
+    keywords
+  });
+});
+
 // Dynamic route for keyword pages
 app.get('/:keyword', async (req, res) => {
   const keyword = req.params.keyword;
