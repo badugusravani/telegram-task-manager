@@ -50,32 +50,47 @@
             <div class="hero">
                 <h1 class="hero-title"><%= keyword.title %></h1>
                 <p class="hero-description"><%= keyword.description %></p>
-                <div class="keyword-meta">
-                    <span class="meta-item">
-                        <strong>Search Volume:</strong> <%= keyword.searchVolume.toLocaleString() %>
-                    </span>
-                    <span class="meta-item">
-                        <strong>Difficulty:</strong> <%= keyword.difficulty %>/100
-                    </span>
-                    <span class="meta-item">
-                        <strong>Category:</strong> <%= keyword.category %>
-                    </span>
-                </div>
             </div>
 
-            <div class="tool-section">
-                <div class="tool-card">
-                    <h2 class="tool-title">Generated Content</h2>
-                    <div class="content-area">
-                        <textarea id="generatedContent" class="content-textarea" readonly><%= keyword.content %></textarea>
-                        <div class="button-group">
-                            <button onclick="copyToClipboard()" class="btn btn-primary">Copy to Clipboard</button>
-                            <button onclick="selectAll()" class="btn btn-secondary">Select All</button>
-                            <button onclick="clearContent()" class="btn btn-outline">Clear</button>
+            <% if (keyword.category === 'calculator') { %>
+                <!-- Calculator Tool -->
+                <div class="tool-section">
+                    <div class="tool-card">
+                        <h2 class="tool-title">Salary Calculator</h2>
+                        <div class="calculator-content">
+                            <div class="calculator-result">
+                                <%= keyword.content %>
+                            </div>
+                            <div class="button-group">
+                                <button onclick="copyCalculatorResult()" class="btn btn-primary">Copy Result</button>
+                                <button onclick="printCalculator()" class="btn btn-secondary">Print</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <% } else { %>
+                <!-- Copy Paste Tool -->
+                <div class="tool-section">
+                    <div class="tool-card">
+                        <h2 class="tool-title">Generated Content</h2>
+                        <div class="content-area">
+                            <div class="content-controls">
+                                <button onclick="copyToClipboard()" class="btn btn-primary">Copy to Clipboard</button>
+                                <button onclick="selectAll()" class="btn btn-secondary">Select All</button>
+                                <button onclick="clearContent()" class="btn btn-outline">Clear</button>
+                                <button onclick="printContent()" class="btn btn-print">Print</button>
+                            </div>
+                            <div class="content-display">
+                                <div id="generatedContent" class="content-text"><%= keyword.content %></div>
+                            </div>
+                            <div class="content-info">
+                                <span class="content-length">Length: <span id="contentLength">0</span> characters</span>
+                                <span class="content-lines">Lines: <span id="contentLines">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
 
             <div class="info-section">
                 <div class="info-card">
@@ -90,17 +105,8 @@
                         <li>Paste it wherever you need it</li>
                         <li>Use "Select All" to manually select the text</li>
                         <li>Use "Clear" to clear the text area</li>
+                        <li>Use "Print" to print the content</li>
                     </ol>
-                </div>
-
-                <div class="info-card">
-                    <h3>SEO Information</h3>
-                    <ul>
-                        <li><strong>Search Volume:</strong> <%= keyword.searchVolume.toLocaleString() %> monthly searches</li>
-                        <li><strong>Competition:</strong> <%= keyword.difficulty %>/100 difficulty</li>
-                        <li><strong>Features:</strong> <%= keyword.features.join(', ') %></li>
-                        <li><strong>Last Updated:</strong> <%= keyword.lastUpdated %></li>
-                    </ul>
                 </div>
             </div>
 
@@ -114,7 +120,6 @@
                                 <p><%= related.description.substring(0, 100) %>...</p>
                                 <div class="tool-meta">
                                     <span class="tool-category"><%= related.category %></span>
-                                    <span class="tool-volume"><%= related.searchVolume.toLocaleString() %> searches</span>
                                 </div>
                             </div>
                         </a>
@@ -155,45 +160,154 @@
     </footer>
 
     <script>
+        // Update content info on load
+        window.addEventListener('load', function() {
+            updateContentInfo();
+        });
+
+        function updateContentInfo() {
+            const content = document.getElementById('generatedContent');
+            if (content) {
+                const text = content.textContent || content.innerText;
+                document.getElementById('contentLength').textContent = text.length;
+                document.getElementById('contentLines').textContent = text.split('\n').length;
+            }
+        }
+
         function copyToClipboard() {
-            const textarea = document.getElementById('generatedContent');
-            textarea.select();
-            document.execCommand('copy');
+            const content = document.getElementById('generatedContent');
+            const text = content.textContent || content.innerText;
             
-            // Show success message
-            const button = event.target;
-            const originalText = button.textContent;
-            button.textContent = 'Copied!';
-            button.classList.add('btn-success');
+            if (navigator.clipboard && window.isSecureContext) {
+                // Use modern clipboard API
+                navigator.clipboard.writeText(text).then(() => {
+                    showSuccessMessage('Copied to clipboard!');
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                // Fallback for older browsers
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
             
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.classList.remove('btn-success');
-            }, 2000);
+            try {
+                document.execCommand('copy');
+                showSuccessMessage('Copied to clipboard!');
+            } catch (err) {
+                showErrorMessage('Failed to copy. Please select and copy manually.');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function copyCalculatorResult() {
+            const content = document.querySelector('.calculator-result');
+            const text = content.textContent || content.innerText;
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showSuccessMessage('Calculator result copied!');
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text);
+            }
         }
 
         function selectAll() {
-            const textarea = document.getElementById('generatedContent');
-            textarea.select();
+            const content = document.getElementById('generatedContent');
+            const range = document.createRange();
+            range.selectNodeContents(content);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
         }
 
         function clearContent() {
-            const textarea = document.getElementById('generatedContent');
-            textarea.value = '';
+            const content = document.getElementById('generatedContent');
+            content.innerHTML = '';
+            updateContentInfo();
         }
 
-        // Auto-resize textarea
-        const textarea = document.getElementById('generatedContent');
-        textarea.addEventListener('input', function() {
-            this.style.height = 'auto';
-            this.style.height = this.scrollHeight + 'px';
-        });
+        function printContent() {
+            const content = document.getElementById('generatedContent');
+            const text = content.textContent || content.innerText;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Print Content</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .content { white-space: pre-wrap; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Generated Content</h1>
+                        <div class="content">${text}</div>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
 
-        // Initialize textarea height
-        window.addEventListener('load', function() {
-            textarea.style.height = 'auto';
-            textarea.style.height = textarea.scrollHeight + 'px';
-        });
+        function printCalculator() {
+            const content = document.querySelector('.calculator-result');
+            const text = content.textContent || content.innerText;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Print Calculator Result</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .content { white-space: pre-wrap; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Salary Calculator Result</h1>
+                        <div class="content">${text}</div>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification success';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function showErrorMessage(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification error';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
     </script>
 </body>
 </html>
