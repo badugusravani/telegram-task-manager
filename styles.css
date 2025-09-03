@@ -195,6 +195,26 @@ body {
     gap: 1rem;
 }
 
+.form-grid {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 12px 16px;
+    align-items: center;
+}
+
+.form-grid input[type="number"] {
+    padding: 10px 12px;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 .calculator-result {
     background: #f8f9fa;
     border-radius: 15px;
