@@ -1,0 +1,266 @@
+/*
+ Theme Name: FreshersBlog GP Child
+ Template: generatepress
+ Version: 1.2.1
+ Description: GeneratePress child with bold header, gradient hero, card hovers, and MCQ patterns.
+*/
+
+/* Design tokens (use everywhere) */
+:root{
+  /* Brand */
+  --brand: #2563eb;
+  --brand-dark: #1e40af;
+  --brand-light: #60a5fa;
+
+  /* Surfaces */
+  --bg: #f8fafc;
+  --surface: #ffffff;
+  --border: rgba(0,0,0,.08);
+  --shadow: 0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg: 0 10px 18px rgba(0,0,0,.08);
+
+  /* Text */
+  --text: #0f172a;          /* slate-900 */
+  --muted: #64748b;         /* slate-500 */
+  --muted-2: #94a3b8;       /* slate-400 */
+
+  /* Radii & spacing */
+  --radius: 14px;
+  --r-soft: 10px;
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+
+  /* Content widths */
+  --content: 760px;
+  --wide: 1024px;
+}
+
+/* Global + Typography */
+/* System font stack: super fast, legible */
+html,body{
+  margin:0; padding:0; background:var(--bg); color:var(--text);
+  font: 16px/1.6 system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+}
+*,*::before,*::after{ box-sizing:border-box }
+
+/* Content widths (works great with GeneratePress) */
+.entry-content>*{ max-width: var(--content); margin-left:auto; margin-right:auto; }
+.entry-content .alignwide{ max-width: var(--wide); }
+.entry-content .alignfull{ max-width: none; }
+
+/* Headings scale */
+.entry-content h1{ font-size: clamp(28px, 3.5vw, 34px); line-height:1.2; margin: var(--space-4) 0 var(--space-2) }
+.entry-content h2{ font-size: clamp(22px, 2.7vw, 26px); line-height:1.25; margin: var(--space-5) 0 var(--space-2) }
+.entry-content h3{ font-size: clamp(18px, 2.2vw, 20px); line-height:1.3;  margin: var(--space-4) 0 var(--space-2) }
+.entry-content p, .entry-content li{ color:var(--text) }
+small, .meta{ color:var(--muted); font-size:.9rem }
+
+/* Header / Navigation (GeneratePress selectors) */
+.main-navigation, .inside-navigation{ background: var(--brand); }
+.main-navigation .main-nav > ul > li > a,
+.main-navigation .menu-toggle,
+.navigation-search input.search-field{
+  color:#fff;
+}
+.main-navigation .main-nav > ul > li > a{
+  padding: 10px 14px; border-radius: 10px;
+}
+.main-navigation .main-nav > ul > li:hover > a,
+.menu-toggle:hover{ background: rgba(255,255,255,.08); }
+
+/* Search in nav */
+.navigation-search input.search-field{
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: 12px; padding: 6px 10px;
+}
+.navigation-search input.search-field::placeholder{ color:#eef; }
+
+/* Hero section (homepage) */
+.fb-hero{
+  padding: 48px 22px; border-radius: 20px; color:#fff;
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-light) 100%);
+}
+.fb-hero h1,.fb-hero h2,.fb-hero p{ color:#fff; }
+.fb-hero .wp-block-search__inside-wrapper{
+  background: rgba(255,255,255,.12);
+  border:1px solid rgba(255,255,255,.25);
+  border-radius:14px; padding:.25rem;
+}
+.fb-hero input.wp-block-search__input{ background:transparent; color:#fff; }
+.fb-hero input.wp-block-search__input::placeholder{ color:#eef; }
+.fb-hero .wp-block-search__button{ background:#fff; color:#111; border-radius:12px; }
+
+/* Cards, grids, and hovers */
+.fb-grid{
+  display:grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 16px;
+}
+.fb-card{
+  border:1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: var(--space-4);
+  box-shadow: var(--shadow);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.fb-card:hover{ transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+.fb-card .thumb{ border-radius: var(--r-soft); overflow:hidden; margin-bottom: var(--space-3) }
+.fb-card h3, .fb-card h4{ margin: .4rem 0 .25rem; font-size: 1.05rem }
+.fb-card .meta{ color: var(--muted); font-size:.875rem }
+
+/* Buttons + sticky CTA */
+.wp-block-button__link, .btn{
+  display:inline-block; border-radius: var(--radius);
+  background: var(--brand); color:#fff; text-decoration:none; font-weight: 600;
+  padding: .75rem 1rem;
+}
+.wp-block-button__link:hover, .btn:hover{ background: var(--brand-dark); color:#fff }
+
+.quiz-cta{ text-align:center; margin: 1rem 0 1.25rem }
+@media (max-width:768px){
+  .quiz-cta{ position: sticky; bottom: 12px; z-index: 50 }
+  .quiz-cta .btn{ box-shadow: 0 10px 24px rgba(37,99,235,.25) }
+}
+
+/* Breadcrumbs + TOC */
+/* Rank Math shortcode output is plain; style lightly */
+.rank-math-breadcrumb, .breadcrumbs{
+  color: var(--muted); font-size: .9rem; margin: var(--space-3) 0;
+}
+.rank-math-breadcrumb a{ color:inherit; text-decoration:none }
+.rank-math-breadcrumb a:hover{ text-decoration:underline }
+
+/* Common TOC plugins (EZ-TOC etc.) */
+.ez-toc, .toc_list{
+  background: #fff; border:1px solid var(--border); border-radius: var(--r-soft);
+  padding: var(--space-4); font-size:.95rem;
+}
+
+/* Quiz block (QSM / HD Quiz area) */
+/* Container around your quiz shortcode */
+.qa, .qsm-quiz-container, .hdq_quiz{
+  background: #fff; border:1px solid var(--border); border-radius: var(--radius);
+  padding: var(--space-5); margin: var(--space-4) 0;
+}
+
+/* Generic question block */
+.qa h3{ margin:0 0 var(--space-2); font-size: 1.125rem }
+.qa label{ display:block; padding: var(--space-2) 0 }
+.qa input[type=radio], .qa input[type=checkbox]{ margin-right: .5rem }
+
+/* QSM buttons/progress rounded */
+.qsm-quiz-container .qsm-btn, .hdq_button{
+  border-radius: var(--radius); padding: .6rem 1rem; font-weight:600;
+}
+.qsm-quiz-container .qsm-progress-bar{ border-radius:999px }
+
+/* Answer box */
+.answers{
+  background: #f8fafc; border:1px dashed #cbd5e1; border-radius: var(--r-soft);
+  padding: var(--space-4); margin-top: var(--space-4);
+}
+
+/* Tables (for answer keys, etc.) */
+.entry-content table{
+  width:100%; border-collapse: collapse; margin: var(--space-4) 0; background:#fff;
+  border:1px solid var(--border); border-radius: var(--r-soft); overflow:hidden;
+}
+.entry-content th, .entry-content td{
+  padding: .75rem .9rem; border-bottom:1px solid var(--border); text-align:left;
+}
+.entry-content thead th{
+  background:#f1f5f9; font-weight:700;
+}
+.entry-content tbody tr:hover{ background:#f9fafb }
+
+/* Footer */
+.site-footer{ background:#fff; border-top:1px solid var(--border) }
+.footer-mini a{ margin-right:10px; font-size:.95rem; color: var(--muted) }
+.footer-mini a:hover{ color: var(--text) }
+.site-info{ color: var(--muted-2) }
+
+/* Responsive tweaks */
+@media (max-width: 1024px){
+  .entry-content .alignwide{ max-width: calc(100vw - 32px); }
+}
+@media (max-width: 768px){
+  .entry-content>*{ padding-left: 16px; padding-right: 16px; }
+  .fb-grid{ grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px }
+}
+
+/* Optional: light dark-mode */
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#0b1020; --surface:#0f172a; --text:#e5e7eb;
+    --muted:#94a3b8; --muted-2:#64748b; --border: rgba(255,255,255,.08);
+    --shadow: 0 1px 2px rgba(0,0,0,.4); --shadow-lg: 0 10px 18px rgba(0,0,0,.35);
+  }
+  .main-navigation, .inside-navigation{ background: var(--brand-dark); }
+  .fb-card{ background: var(--surface); }
+  .entry-content table{ background: var(--surface); }
+  .entry-content thead th{ background:#0b1730; }
+  .answers{ background: #0b1730; border-color: rgba(255,255,255,.2) }
+}
+
+/* Updated on meta styling */
+.meta.updated-on{
+  color: var(--muted);
+  font-size: .9rem;
+  margin: var(--space-2) 0 var(--space-4);
+  font-style: italic;
+}
+
+/* Card list for "Try next quiz" section */
+.fb-card-list{
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.fb-card-list .fb-card{
+  display: flex;
+  align-items: center;
+  padding: var(--space-3);
+}
+.fb-card-list .thumb{
+  width: 80px;
+  height: 60px;
+  margin-right: var(--space-3);
+  margin-bottom: 0;
+  flex-shrink: 0;
+}
+.fb-card-list .thumb img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Focus states for accessibility */
+.wp-block-button__link:focus,
+.btn:focus,
+.main-navigation a:focus{
+  outline: 2px solid var(--brand-light);
+  outline-offset: 2px;
+}
+
+/* Skip link for accessibility */
+.skip-link{
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 999999;
+  background: var(--brand);
+  color: #fff;
+  padding: var(--space-2) var(--space-4);
+  text-decoration: none;
+  border-radius: 0 0 var(--r-soft) 0;
+}
+.skip-link:focus{
+  left: 0;
+}
