@@ -1,0 +1,15 @@
+# Logs
+node_modules
+.env
+*.log
+.nyc_output
+coverage
+dist
+public/views
+public/*.map
+.DS_Store
+Thumbs.db
+.vercel
+.netlify
+.idea
+.vscode

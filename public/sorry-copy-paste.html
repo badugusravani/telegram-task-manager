@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sorry Copy Paste - Apology Text Generator</title>
+    <meta name="description" content="Generate various sorry messages for copy and paste. Different ways to apologize and express remorse.">
+    <meta name="keywords" content="sorry, apology, text generator, copy paste">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yourdomain.com/sorry-copy-paste">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Sorry Copy Paste - Apology Text Generator">
+    <meta property="og:description" content="Generate various sorry messages for copy and paste. Different ways to apologize and express remorse.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/sorry-copy-paste">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Sorry Copy Paste - Apology Text Generator">
+    <meta name="twitter:description" content="Generate various sorry messages for copy and paste. Different ways to apologize and express remorse.">
+    
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/" class="nav-logo">CopyPasteTools</a>
+                <div class="nav-links">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/tools" class="nav-link">Tools</a>
+                    <a href="/about" class="nav-link">About</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="hero">
+                <h1 class="hero-title">Sorry Copy Paste - Apology Text Generator</h1>
+                <p class="hero-description">Generate various sorry messages for copy and paste. Different ways to apologize and express remorse.</p>
+            </div>
+
+            <div class="tool-section">
+                <div class="tool-card">
+                    <h2 class="tool-title">Generated Content</h2>
+                    <div class="content-area">
+                        <textarea id="generatedContent" class="content-textarea" readonly>Sorry
+I'm sorry
+I apologize
+My apologies
+I'm so sorry
+I'm very sorry
+I'm terribly sorry
+I'm deeply sorry
+I'm truly sorry
+I'm really sorry
+I'm extremely sorry
+I'm genuinely sorry
+I'm sincerely sorry
+I'm honestly sorry
+I'm completely sorry</textarea>
+                        <div class="button-group">
+                            <button onclick="copyToClipboard()" class="btn btn-primary">Copy to Clipboard</button>
+                            <button onclick="selectAll()" class="btn btn-secondary">Select All</button>
+                            <button onclick="clearContent()" class="btn btn-outline">Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <div class="info-card">
+                    <h3>About This Tool</h3>
+                    <p>This free online tool generates "sorry copy paste" content that you can copy and paste anywhere. Perfect for social media, messages, and creative projects.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>How to Use</h3>
+                    <ol>
+                        <li>Click "Copy to Clipboard" to copy the generated content</li>
+                        <li>Paste it wherever you need it</li>
+                        <li>Use "Select All" to manually select the text</li>
+                        <li>Use "Clear" to clear the text area</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <div class="tools-grid">
+                    
+    <a href="/sorry-100-times-copy-and-paste" class="tool-link">
+      <div class="tool-item">
+        <h4>Sorry 100 Times Copy and Paste - Apology Message Generator</h4>
+        <p>Generate 'Sorry' repeated 100 times for copy and paste. Perfect for sincere apologies and making ame...</p>
+      </div>
+    </a>
+  
+    <a href="/sorry-written-10000-times-copy-and-paste" class="tool-link">
+      <div class="tool-item">
+        <h4>Sorry Written 10000 Times Copy and Paste - Deep Apology Generator</h4>
+        <p>Generate 'Sorry' written 10000 times for copy and paste. Express deep remorse and sincere apologies....</p>
+      </div>
+    </a>
+  
+    <a href="/100-sorry-copy-paste" class="tool-link">
+      <div class="tool-item">
+        <h4>100 Sorry Copy Paste - Quick Apology Generator</h4>
+        <p>Generate 100 'Sorry' messages for copy and paste. Quick and easy way to apologize....</p>
+      </div>
+    </a>
+  
+    <a href="/100-times-sorry-copy-paste" class="tool-link">
+      <div class="tool-item">
+        <h4>100 Times Sorry Copy Paste - Repeated Apology Generator</h4>
+        <p>Generate 'Sorry' repeated 100 times for copy and paste. Show how sorry you really are....</p>
+      </div>
+    </a>
+  
+    <a href="/sorry-1000-times-copy-and-paste" class="tool-link">
+      <div class="tool-item">
+        <h4>Sorry 1000 Times Copy and Paste - Massive Apology Generator</h4>
+        <p>Generate 'Sorry' repeated 1000 times for copy and paste. Express overwhelming remorse and regret....</p>
+      </div>
+    </a>
+  
+    <a href="/sorry-written-1000-times-copy-and-paste" class="tool-link">
+      <div class="tool-item">
+        <h4>Sorry Written 1000 Times Copy and Paste - Written Apology Generator</h4>
+        <p>Generate 'Sorry' written 1000 times for copy and paste. Handwritten style apologies....</p>
+      </div>
+    </a>
+  
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 CopyPasteTools. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        function copyToClipboard() {
+            const textarea = document.getElementById('generatedContent');
+            textarea.select();
+            document.execCommand('copy');
+            
+            // Show success message
+            const button = event.target;
+            const originalText = button.textContent;
+            button.textContent = 'Copied!';
+            button.classList.add('btn-success');
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.classList.remove('btn-success');
+            }, 2000);
+        }
+
+        function selectAll() {
+            const textarea = document.getElementById('generatedContent');
+            textarea.select();
+        }
+
+        function clearContent() {
+            const textarea = document.getElementById('generatedContent');
+            textarea.value = '';
+        }
+
+        // Auto-resize textarea
+        const textarea = document.getElementById('generatedContent');
+        textarea.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    </script>
+</body>
+</html>

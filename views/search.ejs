@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>">
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/" class="nav-logo">CopyPasteTools</a>
+                <form class="nav-search" action="/search" method="get">
+                    <input type="text" name="q" placeholder="Search tools..." value="<%= q %>" />
+                </form>
+                <div class="nav-links">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/tools" class="nav-link">Tools</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="hero">
+                <h1 class="hero-title">Search</h1>
+                <p class="hero-description">Results for "<%= q %>"</p>
+            </div>
+            <div class="tools-grid">
+                <% if (results.length === 0) { %>
+                    <p>No results found.</p>
+                <% } %>
+                <% results.forEach(function(item){ %>
+                    <a href="/<%= item.slug %>" class="tool-card">
+                        <div class="tool-content">
+                            <h3 class="tool-title"><%= item.title %></h3>
+                            <p class="tool-description"><%= item.description.substring(0, 120) %>...</p>
+                            <div class="tool-meta">
+                                <span class="tool-category"><%= item.category %></span>
+                            </div>
+                        </div>
+                    </a>
+                <% }) %>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CopyPasteTools</h3>
+                    <p>Free online tools for copy paste content, text generators, and utilities.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/tools">All Tools</a></li>
+                        <li><a href="/sitemap.xml">Sitemap</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CopyPasteTools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
+

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <meta name="description" content="<%= description %>">
+    <meta name="keywords" content="<%= keyword.tags.join(', ') %>">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://yourdomain.com/<%= keyword.slug %>">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="<%= title %>">
+    <meta property="og:description" content="<%= description %>">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://yourdomain.com/<%= keyword.slug %>">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="<%= title %>">
+    <meta name="twitter:description" content="<%= description %>">
+    
+    <link rel="stylesheet" href="/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <a href="/" class="nav-logo">CopyPasteTools</a>
+                <div class="nav-links">
+                    <a href="/" class="nav-link">Home</a>
+                    <a href="/tools" class="nav-link">Tools</a>
+                    <a href="/about" class="nav-link">About</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="/">Home</a>
+                <span>/</span>
+                <a href="/category/<%= keyword.category %>"><%= keyword.category %></a>
+                <span>/</span>
+                <span><%= keyword.title %></span>
+            </div>
+
+            <div class="hero">
+                <h1 class="hero-title"><%= keyword.title %></h1>
+                <p class="hero-description"><%= keyword.description %></p>
+            </div>
+
+            <% if (keyword.category === 'calculator') { %>
+                <!-- Calculator Tool -->
+                <div class="tool-section">
+                    <div class="tool-card">
+                        <h2 class="tool-title">Salary Calculator</h2>
+                        <div class="calculator-content">
+                            <div class="form-grid">
+                                <label for="hourlyInput">Hourly Rate ($)</label>
+                                <input type="number" id="hourlyInput" value="<%= (keyword.title.match(/^(\$?\d+)/) || [,''])[1].replace('$','') %>" min="0" step="0.01" />
+                                <label for="hoursPerWeek">Hours per week</label>
+                                <input type="number" id="hoursPerWeek" value="40" min="0" step="1" />
+                                <label for="weeksPerYear">Weeks per year</label>
+                                <input type="number" id="weeksPerYear" value="52" min="0" step="1" />
+                            </div>
+                            <div class="button-group">
+                                <button id="calcBtn" class="btn btn-primary">Calculate</button>
+                                <button onclick="copyCalculatorResult()" class="btn btn-secondary">Copy Result</button>
+                                <button onclick="printCalculator()" class="btn btn-print">Print</button>
+                            </div>
+                            <div class="calculator-result" id="calcResult" style="white-space: pre-wrap;"><%= keyword.content %></div>
+                        </div>
+                    </div>
+                </div>
+            <% } else { %>
+                <!-- Copy Paste Tool -->
+                <div class="tool-section">
+                    <div class="tool-card">
+                        <h2 class="tool-title">Generated Content</h2>
+                        <div class="content-area">
+                            <div class="content-controls">
+                                <button onclick="copyToClipboard()" class="btn btn-primary">Copy to Clipboard</button>
+                                <button onclick="selectAll()" class="btn btn-secondary">Select All</button>
+                                <button onclick="clearContent()" class="btn btn-outline">Clear</button>
+                                <button onclick="printContent()" class="btn btn-print">Print</button>
+                            </div>
+                            <textarea id="generatedContent" class="content-textarea" readonly><%= keyword.content %></textarea>
+                            <div class="content-info">
+                                <span class="content-length">Length: <span id="contentLength">0</span> characters</span>
+                                <span class="content-lines">Lines: <span id="contentLines">0</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+
+            <div class="info-section">
+                <div class="info-card">
+                    <h3>About This Tool</h3>
+                    <p>This free online tool generates "<%= keyword.keyword %>" content that you can copy and paste anywhere. Perfect for social media, messages, and creative projects.</p>
+                </div>
+                
+                <div class="info-card">
+                    <h3>How to Use</h3>
+                    <ol>
+                        <li>Click "Copy to Clipboard" to copy the generated content</li>
+                        <li>Paste it wherever you need it</li>
+                        <li>Use "Select All" to manually select the text</li>
+                        <li>Use "Clear" to clear the text area</li>
+                        <li>Use "Print" to print the content</li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="related-tools">
+                <h3>Related Tools</h3>
+                <div class="tools-grid">
+                    <% relatedKeywords.forEach(function(related) { %>
+                        <a href="/<%= related.slug %>" class="tool-link">
+                            <div class="tool-item">
+                                <h4><%= related.title %></h4>
+                                <p><%= related.description.substring(0, 100) %>...</p>
+                                <div class="tool-meta">
+                                    <span class="tool-category"><%= related.category %></span>
+                                </div>
+                            </div>
+                        </a>
+                    <% }); %>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>CopyPasteTools</h3>
+                    <p>Free online tools for copy paste content, text generators, and utilities.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/tools">All Tools</a></li>
+                        <li><a href="/sitemap.xml">Sitemap</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Categories</h4>
+                    <ul>
+                        <li><a href="/category/love">Love Tools</a></li>
+                        <li><a href="/category/apology">Apology Tools</a></li>
+                        <li><a href="/category/calculator">Calculators</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 CopyPasteTools. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Update content info on load
+        window.addEventListener('load', function() {
+            updateContentInfo();
+            // Real-time calculator updates
+            const h = document.getElementById('hourlyInput');
+            const hpw = document.getElementById('hoursPerWeek');
+            const wpy = document.getElementById('weeksPerYear');
+            const btn = document.getElementById('calcBtn');
+            [h, hpw, wpy].forEach(el => el && el.addEventListener('input', recalculate));
+            btn && btn.addEventListener('click', function(e){ e.preventDefault(); recalculate(); });
+        });
+
+        function updateContentInfo() {
+            const content = document.getElementById('generatedContent');
+            if (content) {
+                const text = content.value || content.textContent || content.innerText || '';
+                const lenEl = document.getElementById('contentLength');
+                const linesEl = document.getElementById('contentLines');
+                if (lenEl) lenEl.textContent = text.length;
+                if (linesEl) linesEl.textContent = text.split('\n').length;
+            }
+        }
+
+        function copyToClipboard() {
+            const content = document.getElementById('generatedContent');
+            const text = content.value || content.textContent || content.innerText;
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                // Use modern clipboard API
+                navigator.clipboard.writeText(text).then(() => {
+                    showSuccessMessage('Copied to clipboard!');
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                // Fallback for older browsers
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
+        function fallbackCopyTextToClipboard(text) {
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showSuccessMessage('Copied to clipboard!');
+            } catch (err) {
+                showErrorMessage('Failed to copy. Please select and copy manually.');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function copyCalculatorResult() {
+            const content = document.getElementById('calcResult');
+            const text = content.textContent || content.innerText;
+            
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showSuccessMessage('Calculator result copied!');
+                }).catch(err => {
+                    fallbackCopyTextToClipboard(text);
+                });
+            } else {
+                fallbackCopyTextToClipboard(text);
+            }
+        }
+
+        function selectAll() {
+            const content = document.getElementById('generatedContent');
+            if (content && content.select) {
+                content.focus();
+                content.select();
+            }
+        }
+
+        function clearContent() {
+            const content = document.getElementById('generatedContent');
+            if (content) {
+                if ('value' in content) content.value = '';
+                else content.innerHTML = '';
+                updateContentInfo();
+            }
+        }
+
+        function printContent() {
+            const content = document.getElementById('generatedContent');
+            const text = content.value || content.textContent || content.innerText;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Print Content</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .content { white-space: pre-wrap; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Generated Content</h1>
+                        <div class="content">${text}</div>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function printCalculator() {
+            const content = document.getElementById('calcResult');
+            const text = content.textContent || content.innerText;
+            const printWindow = window.open('', '_blank');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>Print Calculator Result</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .content { white-space: pre-wrap; }
+                        </style>
+                    </head>
+                    <body>
+                        <h1>Salary Calculator Result</h1>
+                        <div class="content">${text}</div>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        function showSuccessMessage(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification success';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        function showErrorMessage(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification error';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        function recalculate() {
+            const hourly = parseFloat(document.getElementById('hourlyInput').value || '0');
+            const hours = parseFloat(document.getElementById('hoursPerWeek').value || '0');
+            const weeks = parseFloat(document.getElementById('weeksPerYear').value || '0');
+            const weekly = hourly * hours;
+            const monthly = weekly * (weeks / 12);
+            const annual = hourly * hours * weeks;
+            const txt = `Hourly Rate: $${hourly}\nWeekly Pay (${hours} hours): $${weekly.toFixed(2)}\nMonthly Pay: $${monthly.toFixed(2)}\nAnnual Salary: $${annual.toFixed(2)}\n\nBreakdown:\n- ${hours} hours per week\n- ${weeks} weeks per year`;
+            document.getElementById('calcResult').textContent = txt;
+        }
+    </script>
+</body>
+</html>
